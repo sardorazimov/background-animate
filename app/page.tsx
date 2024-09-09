@@ -1,101 +1,131 @@
-import Image from "next/image";
+"use client";
+import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
+import { useTheme } from "next-themes";
+import React, { useId } from "react";
 
-export default function Home() {
+ const page = () => {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="absolute inset-0 h-full w-full pointer-events-none z-0">
+      <div className="absolute inset-0 h-full w-full bg-white dark:bg-black pointer-events-none [mask-image:radial-gradient(ellipse_at_center,transparent,white)]" />
+      {Array.from({ length: 6 }).map((_, index) => (
+        <div className="flex" key={"grid-column" + index}>
+          {Array.from({ length: 10 }).map((_, index) => (
+            <GridBlock key={`grid-row` + index} />
+          ))}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      ))}
     </div>
   );
+};
+
+const GridBlock = () => {
+  return (
+    <div className="flex flex-col items-start justify-center  w-60">
+      <div className="flex items-center justify-center">
+        <Dot />
+        <SVG />
+        {/* <Dot /> */}
+      </div>
+      <SVGVertical className="ml-3" />
+    </div>
+  );
+};
+
+const Dot = () => {
+  return (
+    <div className="h-6 w-6 bg-white dark:bg-neutral-900 flex items-center justify-center rounded-full">
+      <div className="h-2 w-2 bg-neutral-200 dark:bg-neutral-700 rounded-full" />
+    </div>
+  );
+};
+
+const SVGVertical = ({ className }: { className?: string }) => {
+  const width = 1;
+  const height = 140;
+
+  const id = useId();
+  return (
+    <motion.svg
+      width={width}
+      height={height}
+      viewBox={`0 0 ${width} ${height}`}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn("text-neutral-100 dark:text-neutral-800", className)}
+    >
+      <path d="M0.5 0.5V479" stroke="currentColor" strokeWidth={2} />
+      <motion.path
+        d="M0.5 0.5V479"
+        stroke={`url(#gradient-${id})`}
+        strokeWidth={2}
+      />
+
+      <defs>
+        <motion.linearGradient
+          id={`gradient-${id}`}
+          initial={{ x1: 2, y1: -200, x2: 2, y2: -100 }}
+          animate={{ x1: 2, y1: 400, x2: 2, y2: 600 }}
+          transition={{
+            repeat: Infinity,
+            duration: Math.random() * 2 + 1,
+            delay: Math.floor(Math.random() * 6) + 5,
+          }}
+          gradientUnits="userSpaceOnUse"
+        >
+          <motion.stop offset="0%" stopColor="transparent" />
+          <motion.stop offset="50%" stopColor="var(--neutral-200)" />
+          <motion.stop offset="100%" stopColor="transparent" />
+        </motion.linearGradient>
+      </defs>
+    </motion.svg>
+  );
+};
+
+const SVG = ({ className }: { className?: string }) => {
+  const width = 300;
+  const height = 1;
+
+  const id = useId();
+  return (
+    <motion.svg
+      width={width}
+      height={height}
+      viewBox={`0 0 ${width} ${height}`}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn("text-neutral-100 dark:text-neutral-800", className)}
+    >
+      <path d="M0.5 0.5H479" stroke="currentColor" />
+      <motion.path
+        d="M0.5 0.5H479"
+        stroke={`url(#gradient-${id})`}
+        strokeWidth={1}
+      />
+
+      <defs>
+        <motion.linearGradient
+          id={`gradient-${id}`}
+          initial={{ x1: -200, y1: 0, x2: -100, y2: 0 }}
+          animate={{ x1: 400, y1: 0, x2: 600, y2: 0 }}
+          transition={{
+            repeat: Infinity,
+            duration: Math.random() * 2 + 1,
+            delay: Math.floor(Math.random() * 6) + 5,
+          }}
+          gradientUnits="userSpaceOnUse"
+        >
+          <motion.stop offset="0%" stopColor="transparent" />
+          <motion.stop offset="50%" stopColor="var(--neutral-200)" />
+          <motion.stop offset="100%" stopColor="transparent" />
+        </motion.linearGradient>
+      </defs>
+    </motion.svg>
+  );
+};
+
+// Use the below rect to debug linear gradient
+{
+  /* <motion.rect width={width} height={width} fill={`url(#gradient-${id})`} /> */
 }
+export default page
